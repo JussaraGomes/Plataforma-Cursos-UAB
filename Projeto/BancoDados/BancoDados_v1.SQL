@@ -142,7 +142,7 @@ CREATE TABLE Curso (
     Id_Curso int(5) NOT NULL,
     Nome varchar(100) NOT NULL,
     Descricao varchar(500) NOT NULL,
-    Nivel_Dificuldade ENUM('Fácil', 'Moderado', 'Dificil'), 
+    Nivel_Dificuldade ENUM('Fácil', 'Moderado', 'Difícil'), 
     Carga_Horaria ENUM('20h','40h','60h','80h','100h','120h'),
     Pre_Requisitos varchar(200) DEFAULT 'Sem pré-requisitos.',	
     Modalidade ENUM('Presencial', 'Semipresencial', 'EaD')    

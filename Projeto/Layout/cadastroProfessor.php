@@ -59,7 +59,8 @@
 					</div>
 					<div class="col-md-6 form-group">
 						<label for="username">Estado</label>						
-						<select id="estado" name="estado" class="form-control form-control-lg">
+						<select id="estado" name="estado" class="form-control form-control-lg"required>
+							<option value="">Selecione o Estado</option>
 							<option value="Acre (AC)">Acre (AC)</option>
 							<option value="Alagoas (AL)">Alagoas (AL)</option>
 							<option value="Amapá (AP)">Amapá (AP)</option>
