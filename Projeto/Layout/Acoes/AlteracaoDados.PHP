@@ -4,61 +4,57 @@
 // Responsaveis_Curso Pergunta Resposta Módulo
 // Pesquisar id do curso
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/EnderecoFacade.php"); 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/PlataformaFacade.php"); 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/AdministradorFacade.php"); 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/AlunoFacade.php"); 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/ProfessorFacade.php"); 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/CursoFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/EnderecoFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/PlataformaFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/AdministadorFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/AlunoFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/ProfessorFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/CursoFacade.php"); 
 
 
  
  // ==================================================================================================================================================
  // ALTERAR ENDEREÇO
  // ==================================================================================================================================================
- 
-	 
-	if(isset($_POST['alterar_endereco'])){ 
-		$idEndereco = $_POST['idEndereco'];
+  function alterarEndereco(){
 		$estado = $_POST['estado'];   		
+		$logadouro = $_POST['logadouro'];   		
 		$cidade = $_POST['cidade']; 		
 		$bairro = $_POST['bairro'];   	
 		$cep = $_POST['cep']; 		
-		$descricao = $_POST['descricao'];   	 
+		$descricao = $_POST['descricao'];   
+	    $idEndereco = $_POST['idEndereco'];
 		
-			
-		if(!empty($idEndereco) && !empty($estado) && !empty($cidade) && !empty($cep) && !empty($descricao)){				  
-			$confirmacaoAlteracaoEndereco = EnderecoFacade::getInstance()->editarEndereco($estado, $cidade, $bairro, $cep, $descricao, $idEndereco);
+					
+		if(!empty($idEndereco) && !empty($estado) && !empty($logadouro) && !empty($cidade) && !empty($cep) && !empty($descricao)) 			
+			return EnderecoFacade::getInstance()->editarEndereco($estado, $logadouro, $cidade, $bairro, $cep, $descricao, $idEndereco);
+		else			
+			return false;	
 		
-		
-			if($confirmacaoAlteracaoEndereco){ 
-				
-				echo"<script language='javascript' type='text/javascript'>alert('Endereço alterado com sucesso!');window.location.href='../telas/Registro.php'</script>";			
-			}	
-			else{ 
-				echo"<script language='javascript' type='text/javascript'>alert('Houve um erro na alteração endereço');window.location.href='../telas/Registro.php'</script>";
-			}
-		} else
-			echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prosseguir com a alteração do endereço.');window.location.href='../telas/Registro.php'</script>";	
-	}
- 
-  
+ }
+	 
  // ==================================================================================================================================================
  // ALTERAR DADOS DA PLATAFORMA
  // ==================================================================================================================================================
  
   if(isset($_POST['alterar_plataforma'])){
-	  
+	
+	if(alterarEndereco()){ 
+	
 		$idPlataforma = $_POST["idPlataforma"];
 		$nomePlataforma = $_POST['nomePlataforma']; 
 		$emailPlataforma = $_POST['emailPlataforma'];
 		$descricaoPlataforma = $_POST['descricaoPlataforma'];
+		$comoFuncionaPlataforma = $_POST['comoFuncionaPlataforma'];
 		$primeiroTelefonePlataforma = $_POST['primeiroTelefonePlataforma'];
-		$segundoTelefonePlataforma = $_POST['segundoTelefonePlataforma'];
+		$linkFacebook = $_POST['linkFacebook'];
+		$linkInstagram = $_POST['linkInstagram'];
+		$linkSite = $_POST['linkSite'];
+
 		
-		if(!empty($idPlataforma) && !empty($nomePlataforma) && !empty($emailPlataforma) && !empty($descricaoPlataforma) && !empty($primeiroTelefonePlataforma && !empty($segundoTelefonePlataforma)){
-		
-			$confirmacaoAlteracaoPlataforma = PlataformaFacade::getInstance()->editarDadosPlataforma($idPlataforma, $idEnderecoPlataforma, $nomePlataforma, $emailPlataforma, $descricaoPlataforma, $primeiroTelefonePlataforma, $segundoTelefonePlataforma);
+		if(!empty($idPlataforma) && !empty($nomePlataforma) && !empty($emailPlataforma) && !empty($descricaoPlataforma) && !empty($comoFuncionaPlataforma) && !empty($primeiroTelefonePlataforma) && !empty($linkFacebook) && !empty($linkInstagram) && !empty($linkSite)){
+					
+			$confirmacaoAlteracaoPlataforma = PlataformaFacade::getInstance()->editarDadosPlataforma($idPlataforma, $nomePlataforma, $emailPlataforma, $descricaoPlataforma, $comoFuncionaPlataforma, $primeiroTelefonePlataforma, $linkFacebook, $linkInstagram, $linkSite);
 			
 			if($confirmacaoAlteracaoPlataforma){ 
 				
@@ -68,13 +64,15 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Faca
 				echo"<script language='javascript' type='text/javascript'>alert('Houve um erro na alteração dos dados da plataforma.');window.location.href='../telas/Registro.php'</script>";
 			}
 		}
-		else
-			echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prosseguir com a alteração dos dados da plataforma!');window.location.href='../telas/Registro.php'</script>";		
+		//else
+			//echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prosseguir com a alteração dos dados da plataforma!');window.location.href='../telas/Registro.php'</script>";		
 	
-	 
+	}
+	else
+		echo"<script language='javascript' type='text/javascript'>alert('Houve um erro na alteração dos dados do endereço.');window.location.href='../telas/Registro.php'</script>";
 	 
  }
- 
+/* 
  // ==================================================================================================================================================
  // ALTERAR DADOS DO ADMINISTRADOR
  // ==================================================================================================================================================
@@ -208,5 +206,6 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Faca
 	else
 		echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prossegui com a alteração dos dado do curso!');window.location.href='../telas/Registro.php'</script>";
  }
+ */
 ?>
 

@@ -1,12 +1,12 @@
 <?php
 
-require("ConexaoBD.php");
 require_once("ConsultasSQL.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Model/Curso.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Curso.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/ConexaoBD.php");
 
 class CursoDAO {
   
-    private $instance;
+    private static $instance;
 
     public function __construct() {
     }
@@ -19,8 +19,10 @@ class CursoDAO {
     }
     
     public function popularCurso($row) { 
-        $curso = new Curso(
-            $row['Id_Curso'], $row['Nome'], $row['Descricao'], $row['Nivel_Dificuldade'], $row['Carga_Horaria'], $row['Pre_Requisitos'], $row['Modalidade']);
+        $curso = new Curso($row['Nome'], $row['Descricao'], $row['Nivel_Dificuldade'], $row['Carga_Horaria'], $row['Pre_Requisitos'], $row['Modalidade'], $row['FotoCurso']);
+				
+		$curso->setIdCurso($row['Id_Curso']);
+
         return $curso;
     }
     
@@ -28,7 +30,7 @@ class CursoDAO {
     public function adicionarNovoCurso($curso) {
 
         try {
-            $sql = Sql::getInstance()->adicionarNovoCurso_SQL();
+            $sql = ConsultasSQL::getInstance()->adicionarNovoCurso_SQL();
             $stmt = ConexaoDB::getConexaoPDO()->prepare($sql);
             
             $stmt->bindParam(1, $curso->getNome());
@@ -37,7 +39,10 @@ class CursoDAO {
             $stmt->bindParam(4, $curso->getCargaHoraria());
             $stmt->bindParam(5, $curso->getPreRequisitos());
             $stmt->bindParam(6, $curso->getModalidade());
-            $stmt->execute();
+            $stmt->bindParam(7, $curso->getFoto());
+			
+            return $stmt->execute();
+			
         } catch (Exception $e) {
             echo "<br> Erro CursoDAO (adicionarNovoCurso)- Código: " . $e->getCode() . " Mensagem: " . $e->getMessage();
         }
@@ -45,7 +50,7 @@ class CursoDAO {
 
     public function listarCursos() {
         try {
-            $sql = Sql::getInstance()->listarCurso_SQL();
+            $sql = ConsultasSQL::getInstance()->listarCurso_SQL();
             
             $stmt = ConexaoDB::getConexaoPDO()->prepare($sql);
             
@@ -69,9 +74,24 @@ class CursoDAO {
         }
     }
    
+    public function verificarCursoNome($nomeCurso) {
+        try {
+            $sql = ConsultasSQL::getInstance()->buscarCursoNome_SQL();
+            $stmt = ConexaoDB::getConexaoPDO()->prepare($sql);
+            
+            $stmt->bindParam(1, $nomeCurso);
+            $stmt->execute();
+            
+            return ($stmt->rowCount() != 0);
+            
+        } catch (Exception $e) {
+            echo "<br> Erro CursoDAO (verificarCursoNome) - Código: " . $e->getCode() . " Mensagem: " . $e->getMessage();
+        }
+    }
+	
     public function buscarCursoId($idCurso) {
         try {
-            $sql = Sql::getInstance()->buscarCursoId_SQL();
+            $sql = ConsultasSQL::getInstance()->buscarCursoId_SQL();
             $stmt = ConexaoDB::getConexaoPDO()->prepare($sql);
             
             $stmt->bindParam(1, $idCurso);
@@ -81,13 +101,13 @@ class CursoDAO {
         
             
         } catch (Exception $e) {
-            echo "<br> Erro AdministradorDAO (buscarAdministradorCPF) - Código: " . $e->getCode() . " Mensagem: " . $e->getMessage();
+            echo "<br> Erro CursoDAO (buscarCursoId) - Código: " . $e->getCode() . " Mensagem: " . $e->getMessage();
         }
     }
     
     public function editarDadosCurso($curso) {
         try {
-            $sql = Sql::getInstance()->alterarDadosCurso_SQL();
+            $sql = ConsultasSQL::getInstance()->alterarDadosCurso_SQL();
             $stmt = ConexaoDB::getConexaoPDO()->prepare($sql);
 
             $stmt->bindParam(1, $curso->getNome());
@@ -96,7 +116,8 @@ class CursoDAO {
             $stmt->bindParam(4, $curso->getCargaHoraria());
             $stmt->bindParam(5, $curso->getPreRequisitos());
             $stmt->bindParam(6, $curso->getModalidade());
-            $stmt->bindParam(7, $curso->getIdCurso());
+            $stmt->bindParam(7, $curso->getFoto());
+            $stmt->bindParam(8, $curso->getIdCurso());
 
             $stmt->execute();
         } catch (Excepetion $e) {
@@ -106,7 +127,7 @@ class CursoDAO {
 
     public function deletarCurso($idCurso) {
         try {
-            $sql = Sql::getInstance()->deletarAdministrador_SQL();
+            $sql = ConsultasSQL::getInstance()->deletarAdministrador_SQL();
             $p_sql = $ConexaoPDO->prepare($sql);
             
             $p_sql->bindParam(1, $idCurso);

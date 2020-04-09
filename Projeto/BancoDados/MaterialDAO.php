@@ -2,7 +2,7 @@
 
 require("ConexaoBD.php");
 require_once("ConsultasSQL.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Model/Material.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Material.php");
 
 class MaterialDAO {
 

@@ -8,17 +8,15 @@ class Administrador {
     private $email;
     private $senha;
     private $primeiroTelefone;
-    private $segundoTelefone;
     private $bloqueado;
 
-    public function __construct($cpfAdministrador, $idEndereco, $nome, $email, $senha, $primeiroTelefone, $segundoTelefone, $bloqueado) {
+    public function __construct($cpfAdministrador, $idEndereco, $nome, $email, $senha, $primeiroTelefone, $bloqueado) {
         $this->cpfAdministrador = $cpfAdministrador;
         $this->idEndereco = $idEndereco;
         $this->nome = $nome;
         $this->email = $email;
         $this->senha = $senha;
         $this->primeiroTelefone = $primeiroTelefone;
-        $this->segundoTelefone = $segundoTelefone;
         $this->bloqueado = $bloqueado;
     }
 
@@ -45,10 +43,6 @@ class Administrador {
 
     public function getPrimeiroTelefone() {
         return $this->primeiroTelefone;
-    }
-
-    public function getSegundoTelefone() {
-        return $this->segundoTelefone;
     }
 
     public function getBloqueado() {
@@ -79,10 +73,6 @@ class Administrador {
 
     public function setPrimeiroTelefone($primeiroTelefone) {
         $this->primeiroTelefone = $primeiroTelefone;
-    }
-
-    public function setSegundoTelefone($segundoTelefone) {
-        $this->segundoTelefone = $segundoTelefone;
     }
 
     public function setBloqueado($bloqueado) {

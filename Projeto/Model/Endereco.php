@@ -4,13 +4,15 @@ class Endereco {
 
     private $idEndereco;
     private $estado;
+    private $logadouro;
     private $cidade;
     private $bairro;
     private $cep;
     private $descricao;
 
-    public function __construct($estado, $cidade, $bairro, $cep, $descricao) {
+    public function __construct($estado, $logadouro, $cidade, $bairro, $cep, $descricao) {
         $this->estado = $estado;
+        $this->logadouro = $logadouro;
         $this->cidade = $cidade;
         $this->bairro = $bairro;
         $this->cep = $cep;
@@ -24,6 +26,10 @@ class Endereco {
 
     public function getEstado() {
         return $this->estado;
+    }
+
+    public function getLogadouro() {
+        return $this->logadouro;
     }
 
     public function getCidade() {
@@ -49,6 +55,10 @@ class Endereco {
 	
     public function setEstado($estado) {
         $this->estado = $estado;
+    }
+	
+    public function setLogadouro($logadouro) {
+        $this->logadouro = $logadouro;
     }
 
     public function setCidade($cidade) {

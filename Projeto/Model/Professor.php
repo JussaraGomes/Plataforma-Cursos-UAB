@@ -10,16 +10,17 @@ class Professor {
     private $primeiroTelefone;
     private $segundoTelefone;
     private $bloqueado;
+    private $url_foto;
 
-    public function __construct($cpfProfessor, $idEndereco, $nome, $email, $senha, $primeiroTelefone, $segundoTelefone, $bloqueado) {
+    public function __construct($cpfProfessor, $idEndereco, $nome, $email, $senha, $primeiroTelefone, $bloqueado, $url_foto) {
         $this->cpfProfessor = $cpfProfessor;
         $this->idEndereco = $idEndereco;
         $this->nome = $nome;
         $this->email = $email;
         $this->senha = $senha;
         $this->primeiroTelefone = $primeiroTelefone;
-        $this->segundoTelefone = $segundoTelefone;
         $this->bloqueado = $bloqueado;
+        $this->url_foto = $url_foto;
     }
 
     // Get's	
@@ -54,6 +55,10 @@ class Professor {
     public function getBloqueado() {
         return $this->bloqueado;
     }
+	
+    public function getFoto() {
+        return $this->url_foto;
+    }
 
     // Set's	
 
@@ -87,6 +92,10 @@ class Professor {
 
     public function setBloqueado($bloqueado) {
         $this->bloqueado = $bloqueado;
+    }
+	
+    public function setFoto($url_foto) {
+        $this->url_foto = $url_foto;
     }
 
 }

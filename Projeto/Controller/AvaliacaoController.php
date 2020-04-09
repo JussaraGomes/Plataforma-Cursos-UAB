@@ -1,10 +1,7 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Avaliacao.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/AvaliacaoDAO.php");
 
 /**
  * Description of AvaliacaoController
@@ -28,15 +25,15 @@ class AvaliacaoController {
     
     public function adicionarAvaliacao($idMatricula, $idProva, $nota) {
         $avaliacao = new Avaliacao($idMAtricula, $idProva, $nota);
-        return AvaliacaoDAO::getInstance()-->adicionarAvaliacao($avaliacao);
+        return AvaliacaoDAO::getInstance()->adicionarAvaliacao($avaliacao);
     }
     
     public function listarAvaliacoesMatriculado($cpfAluno) {
-        return AvaliacaoDAO::getInstance()-->listarAvaliacoesMatriculado($cpfAluno);
+        return AvaliacaoDAO::getInstance()->listarAvaliacoesMatriculado($cpfAluno);
     }
             
     public function deletarAvaliacao($idAvaliacao) {
-        return AvaliacaoDAO::getInstance()-->deletarAvaliacao($idAvaliacao);
+        return AvaliacaoDAO::getInstance()->deletarAvaliacao($idAvaliacao);
     }
     
     

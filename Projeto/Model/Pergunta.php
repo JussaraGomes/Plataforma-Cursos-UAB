@@ -44,7 +44,7 @@ class Pergunta {
         $this->textoPergunta = $textoPergunta;
     }
 
-    public function getDataPergunta($dataPergunta) {
+    public function setDataPergunta($dataPergunta) {
         $this->dataPergunta = $dataPergunta;
     }
 

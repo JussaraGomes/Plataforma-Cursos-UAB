@@ -1,12 +1,6 @@
 <?php
-require_once("../controller/ProfessorController.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Controller/ProfessorController.php"); 
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Controller/ProfessorController.php");
 
 /**
  * Description of ProfessorFacade
@@ -15,7 +9,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Cont
  */
 class ProfessorFacade {
 
-    private $conexaoPDO;
+    private static $instance;
 
     public function __construct() {
     }
@@ -27,16 +21,10 @@ class ProfessorFacade {
         return self::$instance;
     }
     
-    // Adiciona um novo administrador com um telefone
-    public function adicionarNovoProfessor($cpfProfessor, $idEndereco, $nome, $email, $senha, $primeiroTelefone) {
-		return  ProfessorController::getInstance()->adicionarNovoProfessor($cpfProfessor, $idEndereco, $nome, $email, $senha, $primeiroTelefone);
+    public function adicionarNovoProfessor($cpfProfessor, $idEndereco, $nome, $email, $senha, $primeiroTelefone, $url_foto) {
+		return  ProfessorController::getInstance()->adicionarNovoProfessor($cpfProfessor, $idEndereco, $nome, $email, $senha, $primeiroTelefone, $url_foto);
     }
-   
-    // Adiciona um novo administrador com um telefone
-    public function adicionarNovoProfessor_($cpfProfessor, $idEndereco, $nome, $email, $senha, $primeiroTelefone, $segundoTelefone) {
-		return  ProfessorController::getInstance()->adicionarNovoProfessor_($cpfProfessor, $idEndereco, $nome, $email, $senha, $primeiroTelefone, $segundoTelefone);
-    }
-    
+       
     // Busca um administrador atravéz do CPF
     public function buscarProfessorCPF($cpf) {
 		return  ProfessorController::getInstance()->buscarProfessorCPF($cpf);

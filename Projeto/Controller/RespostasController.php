@@ -1,10 +1,7 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Resposta.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/RespostaDAO.php");
 
 /**
  * Description of RespostasController
@@ -28,15 +25,15 @@ class RespostasController {
     
 
     public function adicionarNovaResposta($idPergunta, $textoPergunta, $dataPergunta) {
-
+		return null;
     }
 
     public function listarRespostasPergunta($idPergunta) {
-
+		return null;
     }
         
     public function deletarResposta($idResposta) {
-
+		return null;
     }
     
 }

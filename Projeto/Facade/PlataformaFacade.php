@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Controller/PlataformaController.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Controller/PlataformaController.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,7 +15,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Cont
  */
 class PlataformaFacade {
 
-    private $conexaoPDO;
+    private static $instance;
 
     public function __construct() {
     }
@@ -36,15 +36,8 @@ class PlataformaFacade {
 		return  PlataformaController::getInstance()->buscarPlataforma($idPlataforma);
     }
 
-    public function editarDadosPlataforma($idPlataforma, $nome, $email, $descricao, $primeiroTelefone, $segundoTelefone) {
-		return  PlataformaController::getInstance()->editarDadosPlataforma($idPlataforma,$nome, $email, $descricao, $primeiroTelefone, $segundoTelefone);
+    public function editarDadosPlataforma($idPlataforma, $nome, $email, $descricao, $comoFunciona, $primeiroTelefone, $linkFacebook, $linkInstagram, $linkSite) {
+		return  PlataformaController::getInstance()->editarDadosPlataforma($idPlataforma,$nome, $email, $descricao, $comoFunciona, $primeiroTelefone, $linkFacebook, $linkInstagram, $linkSite);
     }
-    
-    public function adicionarPlataforma($idEndereco,$nome, $email, $descricao, $primeiroTelefone, $segundoTelefone) {
-		return  PlataformaController::getInstance()->adicionarPlataforma($idEndereco,$nome, $email, $descricao, $primeiroTelefone, $segundoTelefone);
-    }
-    
-    public function deletarPlataforma($idPlataforma) {
-		return  PlataformaController::getInstance()->deletarPlataforma($idPlataforma);
-    }
+     
 }

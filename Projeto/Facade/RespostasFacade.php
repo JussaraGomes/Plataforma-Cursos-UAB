@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Controller/RespostaController.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Controller/AdministadorController.php");
 
 /**
  * Description of RespostasFacade

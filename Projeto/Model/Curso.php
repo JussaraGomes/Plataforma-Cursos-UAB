@@ -9,14 +9,16 @@ class Curso {
     private $cargaHoraria;
     private $preRequisito;
     private $modalidade;
+    private $urlFoto;
 
-    public function __construct($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisito, $modalidade) {
+    public function __construct($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisito, $modalidade, $urlFoto) {
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->nivelDificuldade = $nivelDificuldade;
         $this->cargaHoraria = $cargaHoraria;
         $this->preRequisito = $preRequisito;
         $this->modalidade = $modalidade;
+        $this->urlFoto = $urlFoto;
     }
 
     // Get's	
@@ -40,15 +42,23 @@ class Curso {
         return $this->cargaHoraria;
     }
 
-    public function getPreRequisito() {
-        return $this->primeiroTelefone;
+    public function getPreRequisitos() {
+        return $this->preRequisito;
     }
 
     public function getModalidade() {
         return $this->modalidade;
     }
 
+    public function getFoto() {
+        return $this->urlFoto;
+    }
+
     // Set's	
+
+    public function setIdCurso($idCurso) {
+        $this->idCurso = $idCurso;
+    }
 
     public function setNome($nome) {
         $this->nome = $nome;
@@ -72,6 +82,10 @@ class Curso {
 
     public function setModalidade($modalidade) {
         $this->modalidade = $modalidade;
+    }
+
+    public function setFoto($urlFoto) {
+        $this->urlFoto = $urlFoto;
     }
 
 }

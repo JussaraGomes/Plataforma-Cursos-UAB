@@ -1,12 +1,7 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-include ('../Model/Endereco.php');
-require_once("../database/EnderecoDAO.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Endereco.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/EnderecoDAO.php");
 
 /**
  * Description of EnderecoController
@@ -28,9 +23,9 @@ class EnderecoController {
         return self::$instance;
     }
 
-    public function cadastrarEndereco($estado, $cidade, $bairro, $cep, $descricao) {
+    public function cadastrarEndereco($estado, $logadouro, $cidade, $bairro, $cep, $descricao) {
 
-        $endereco = new Endereco($estado, $cidade, $bairro, $cep, $descricao);
+        $endereco = new Endereco($estado, $logadouro, $cidade, $bairro, $cep, $descricao);
 
         return EnderecoDAO::getInstance()->adicionarNovoEndereco($endereco);
     }
@@ -39,9 +34,11 @@ class EnderecoController {
         return EnderecoDAO::getInstance()->buscarEndereco($idEndereco);
     }
 
-    public function editarEndereco($estado, $cidade, $bairro, $cep, $descricao, $idEndereco){
-        $endereco = new Endereco($estado, $cidade, $bairro, $cep, $descricao);
-        $endereco-->setIdEndereco($idEndereco);
+    public function editarEndereco($estado, $logadouro, $cidade, $bairro, $cep, $descricao, $idEndereco){
+		
+        $endereco = new Endereco($estado, $logadouro, $cidade, $bairro, $cep, $descricao);
+        
+		$endereco->setIdEndereco($idEndereco);
         
         return EnderecoDAO::getInstance()->editarEndereco($endereco);
     }

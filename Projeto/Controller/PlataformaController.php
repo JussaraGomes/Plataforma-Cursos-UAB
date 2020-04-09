@@ -1,10 +1,7 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Plataforma.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/PlataformaDAO.php");
 
 /**
  * Description of PlataformaController
@@ -13,10 +10,9 @@
  */
 class PlataformaController {
 
-    private $conexaoPDO;
+    private static $instance;
 
     public function __construct() {
-        $this->conexaoPDO = (new ConexaoBD)->getConexaoPDO();
     }
 
     public static function getInstance() {
@@ -32,18 +28,19 @@ class PlataformaController {
     
     
     public function buscarPlataforma($idPlataforma) {
+		return  PlataformaDAO::getInstance()->buscarPlataforma($idPlataforma);
 
     }
 
-    public function editarDadosPlataforma($idPlataforma,$nome, $email, $descricao, $primeiroTelefone, $segundoTelefone) {
+    public function editarDadosPlataforma($idPlataforma, $nome, $email, $descricao, $comoFunciona, $primeiroTelefone, $linkFacebook, $linkInstagram, $linkSite) {
+						
+		$plataforma = new Plataforma(0, $nome, $email, $descricao, $comoFunciona, $primeiroTelefone, $linkFacebook, $linkInstagram, $linkSite);    
+		
+		$plataforma->setIdPlataforma($idPlataforma);
+		
+		echo "Controler2: Como funcion: ",$plataforma->getComoFunciona();
 
+        return PlataformaDAO::getInstance()->editarDadosPlataforma($plataforma);
     }
-    
-    public function adicionarPlataforma($idEndereco,$nome, $email, $descricao, $primeiroTelefone, $segundoTelefone) {
-
-    }
-    
-    public function deletarPlataforma($idPlataforma) {
-
-    }
+     
 }

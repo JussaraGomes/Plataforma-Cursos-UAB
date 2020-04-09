@@ -6,25 +6,24 @@ class Plataforma {
     private $idEndereco;
     private $nome;
     private $email;
-    private $senha;
     private $descricao;
     private $primeiroTelefone;
-    private $segundoTelefone;
 	private $linkFacebook;
 	private $linkInstagram;
 	private $linkSite;
+	private $comoFunciona;
 
-    public function __construct($idEndereco, $nome, $email, $senha, $descricao, $primeiroTelefone, $segundoTelefone, $linkFacebook, $linkInstagram, $linkSite) {
+    public function __construct($idEndereco, $nome, $email, $descricao, $comoFunciona, $primeiroTelefone, $linkFacebook, $linkInstagram, $linkSite) {
         $this->idEndereco = $idEndereco;
         $this->nome = $nome;
         $this->email = $email;
-        $this->senha = $senha;
         $this->descricao = $descricao;
+        $this->comoFunciona = $comoFunciona;
         $this->primeiroTelefone = $primeiroTelefone;
-        $this->segundoTelefone = $segundoTelefone;
         $this->linkFacebook = $linkFacebook;
         $this->linkInstagram = $linkInstagram;
         $this->linkSite = $linkSite;
+		
     }
 
     // Get's
@@ -44,20 +43,16 @@ class Plataforma {
         return $this->email;
     }
 
-    public function getSenha() {
-        return $this->senha;
-    }
-
     public function getDescricao() {
         return $this->descricao;
+    }
+	
+    public function getComoFunciona() {
+        return $this->comoFunciona;
     }
 
     public function getPrimeiroTelefone() {
         return $this->primeiroTelefone;
-    }
-
-    public function getSegundoTelefone() {
-        return $this->segundoTelefone;
     }
 
     public function getLinkFacebook() {
@@ -89,20 +84,16 @@ class Plataforma {
         $this->email = $email;
     }
 
-    public function setSenha($senha) {
-        $this->senha = $senha;
-    }
-
     public function setDescricao($descricao) {
         $this->descricao = $descricao;
     }
 
+    public function setComoFunciona($comoFunciona) {
+        $this->comoFunciona = $comoFunciona;
+    }
+	
     public function setPrimeiroTelefone($primeiroTelefone) {
         $this->primeiroTelefone = $primeiroTelefone;
-    }
-
-    public function setSegundoTelefone($segundoTelefone) {
-        $this->segundoTelefone = $segundoTelefone;
     }
 
     public function setLinkFacebook($linkFacebook) {

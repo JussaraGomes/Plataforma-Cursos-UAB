@@ -1,6 +1,6 @@
 <?php
-require_once("../controller/PerguntaController.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Controller/PerguntaController.php"); 
+
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Controller/AdministadorController.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.

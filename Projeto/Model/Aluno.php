@@ -7,18 +7,16 @@ class Aluno {
     private $nome;
     private $email;
     private $senha;
-    private $primeiroTelefone;
-    private $segundoTelefone;
+    private $telefone;
     private $bloqueado;
 
-    public function __construct($cpfAluno, $idEndereco, $nome, $email, $senha, $primeiroTelefone, $segundoTelefone, $bloqueado) {
+    public function __construct($cpfAluno, $idEndereco, $nome, $email, $senha, $telefone, $bloqueado) {
         $this->cpfAluno = $cpfAluno;
         $this->idEndereco = $idEndereco;
         $this->nome = $nome;
         $this->email = $email;
         $this->senha = $senha;
-        $this->primeiroTelefone = $primeiroTelefone;
-        $this->segundoTelefone = $segundoTelefone;
+        $this->telefone = $telefone;
         $this->bloqueado = $bloqueado;
     }
 
@@ -43,12 +41,8 @@ class Aluno {
         return $this->senha;
     }
 
-    public function getPrimeiroTelefone() {
-        return $this->primeiroTelefone;
-    }
-
-    public function getSegundoTelefone() {
-        return $this->segundoTelefone;
+    public function getTelefone() {
+        return $this->telefone;
     }
 
     public function getBloqueado() {
@@ -77,12 +71,8 @@ class Aluno {
         $this->senha = $senha;
     }
 
-    public function setPrimeiroTelefone($primeiroTelefone) {
-        $this->primeiroTelefone = $primeiroTelefone;
-    }
-
-    public function setSegundoTelefone($segundoTelefone) {
-        $this->segundoTelefone = $segundoTelefone;
+    public function setTelefone($telefone) {
+        $this->telefone = $telefone;
     }
 
     public function setBloqueado($bloqueado) {

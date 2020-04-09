@@ -3,7 +3,7 @@
 
 require("ConexaoBD.php");
 require_once("ConsultasSQL.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Model/Pergunta.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Pergunta.php");
 
 class PerguntaDAO {
     

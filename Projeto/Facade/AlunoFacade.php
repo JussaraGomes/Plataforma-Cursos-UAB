@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Controller/AlunoController.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Controller/AlunoController.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,7 +15,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Cont
  */
 class AlunoFacade {
 
-    private $conexaoPDO;
+    private static $instance;
 
     public function __construct() {
     }

@@ -43,7 +43,7 @@ class Avaliacao {
         $this->idProva = $idProva;
     }
 
-    public function getNota($nota) {
+    public function setNota($nota) {
         $this->nota = $nota;
     }
 

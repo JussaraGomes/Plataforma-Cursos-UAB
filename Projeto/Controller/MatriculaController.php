@@ -1,10 +1,8 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Matricula.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/MatriculaDAO.php");
 
 /**
  * Description of MatriculaController
@@ -28,20 +26,20 @@ class MatriculaController {
    
     public function adicionarnovaMatricula($idCurso, $cpfAluno, $dataMatricula) {
         $matricula = new Matricula($idCurso, $cpfAluno, $dataMatricula);
-        return MatriculaDAO::getInstance()-->adicionarnovaMatricula($matricula);
+        return MatriculaDAO::getInstance()->adicionarnovaMatricula($matricula);
     }
     
     
     public function listarMatriculasCurso($idCurso) {
-        return MatriculaDAO::getInstance()-->listarMatriculasCurso($idCurso);
+        return MatriculaDAO::getInstance()->listarMatriculasCurso($idCurso);
     }
     
         
     public function listarMatriculasAluno($cpfAluno) {
-        return MatriculaDAO::getInstance()-->listarMatriculasAluno($cpfAluno);
+        return MatriculaDAO::getInstance()->listarMatriculasAluno($cpfAluno);
     }
     
     public function deletarMatricula($idMatricula) {
-        return MatriculaDAO::getInstance()-->deletarMatricula($idMatricula);
+        return MatriculaDAO::getInstance()->deletarMatricula($idMatricula);
     }
         }

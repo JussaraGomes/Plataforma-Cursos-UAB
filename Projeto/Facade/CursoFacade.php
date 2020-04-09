@@ -1,6 +1,6 @@
 <?php
-require_once("../controller/CursoController.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Controller/CursoController.php"); 
+
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Controller/CursoController.php");
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,7 +15,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Cont
  */
 class CursoFacade {
 
-    private $conexaoPDO;
+    private static $instance;
 
     public function __construct() {
     }
@@ -27,8 +27,8 @@ class CursoFacade {
         return self::$instance;
     }
     
-    public function adicionarNovoCurso($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade) {
-		return  CursoController::getInstance()->adicionarNovoCurso($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade);
+    public function adicionarNovoCurso($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade, $urlFoto) {
+		return  CursoController::getInstance()->adicionarNovoCurso($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade, $urlFoto);
     }
 
     public function listarCursos() {
@@ -39,8 +39,8 @@ class CursoFacade {
 		return  CursoController::getInstance()->buscarCursoId($idCurso);
     }
     
-    public function editarDadosCurso($idCurso, $nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade) {
-		return  CursoController::getInstance()->editarDadosCurso($idCurso, $nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade);
+    public function editarDadosCurso($idCurso, $nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade, $urlFoto) {
+		return  CursoController::getInstance()->editarDadosCurso($idCurso, $nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade, $urlFoto);
     }
 
     public function deletarCurso($idCurso) {

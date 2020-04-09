@@ -1,10 +1,7 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Aula.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/AulaDAO.php");
 
 /**
  * Description of AulaController
@@ -27,14 +24,14 @@ class AulaController {
     }
     
     public function adicionarNovaAula($idModulo, $nomeAula) {
-        return AulaDAO::getInstance()-->adicionarNovaAula($idModulo, $nomeAula);
+        return AulaDAO::getInstance()->adicionarNovaAula($idModulo, $nomeAula);
     }
 
     public function listarAulasModulo($idModulo) {
-        return AulaDAO::getInstance()-->listarAulasModulo($idModulo);
+        return AulaDAO::getInstance()->listarAulasModulo($idModulo);
     }
         
     public function deletarAula($idAula) {
-        return AulaDAO::getInstance()-->deletarAula($idAula);
+        return AulaDAO::getInstance()->deletarAula($idAula);
     }
 }

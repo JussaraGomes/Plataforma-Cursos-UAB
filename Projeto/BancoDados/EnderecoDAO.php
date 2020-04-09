@@ -1,12 +1,12 @@
 <?php
 
-require("ConexaoBD.php");
-require_once("ConsultasSQL.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Model/Endereco.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Endereco.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/ConexaoBD.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/ConsultasSQL.php");
 
 class EnderecoDAO {
 
-    private $instance;
+    private static $instance;
 
     public function __construct() {
     }
@@ -19,24 +19,32 @@ class EnderecoDAO {
     }
 
     public function popularEndereco($row) {
-        $endereco = new Endereco(
-                $row['Id_Endereco'], $row['Estado'], $row['Cidade'], $row['Bairro'], $row['CEP'], $row['Descricao']);
+        $endereco = new Endereco($row['Estado'], $row['Logadouro'], $row['Cidade'], $row['Bairro'], $row['CEP'], $row['Descricao']);
+				
+		$endereco->setIdEndereco($row['Id_Endereco']);
+		
         return $endereco;
     }
 
     public function adicionarNovoEndereco($endereco) {
 
         try {
-            $sql = Sql::getInstance()->adicionarNovoEndereco_SQL();
+            $sql = ConsultasSQL::getInstance()->adicionarNovoEndereco_SQL();
+			
             $stmt = ConexaoDB::getConexaoPDO()->prepare($sql);
 
             $stmt->bindParam(1, $endereco->getEstado());
-            $stmt->bindParam(2, $endereco->getCidade());
-            $stmt->bindParam(3, $endereco->getBairro());
-            $stmt->bindParam(4, $endereco->getCep());
-            $stmt->bindParam(5, $endereco->getDescricao());
+            $stmt->bindParam(2, $endereco->getLogadouro());
+            $stmt->bindParam(3, $endereco->getCidade());
+            $stmt->bindParam(4, $endereco->getBairro());
+            $stmt->bindParam(5, $endereco->getCep());
+            $stmt->bindParam(6, $endereco->getDescricao());
 
-            return $stmt->execute();
+            if($stmt->execute())
+				return ConexaoDB::getConexaoPDO()->lastInsertId("uab_plataforma.Id_Endereco");
+			else
+				return -1;
+
         } catch (Exception $e) {
             echo "<br> Erro EnderecoDAO (adicionarNovoEndereco)- Código: " . $e->getCode() . " Mensagem: " . $e->getMessage();
         }
@@ -44,7 +52,7 @@ class EnderecoDAO {
 
     public function buscarEndereco($idEndereco) {
         try {
-            $sql = Sql::getInstance()->buscarEndereco_SQL();
+            $sql = ConsultasSQL::getInstance()->buscarEndereco_SQL();
             $stmt = ConexaoDB::getConexaoPDO()->prepare($sql);
 
             $stmt->bindParam(1, $idEndereco);
@@ -52,22 +60,25 @@ class EnderecoDAO {
             $stmt->execute();
 
             return $this->popularEndereco($stmt->fetch(PDO::FETCH_ASSOC));
+			
         } catch (Exception $e) {
             echo "<br> Erro EnderecoDAO (buscarEnderecoCPF) - Código: " . $e->getCode() . " Mensagem: " . $e->getMessage();
         }
     }
 
     public function editarEndereco($endereco) {
+		echo "DAO";
         try {
-            $sql = Sql::getInstance()->alterarDadosAdministrador_SQL();
+            $sql = ConsultasSQL::getInstance()->alterarEndereco_SQL();
             $stmt = ConexaoDB::getConexaoPDO()->prepare($sql);
 
             $stmt->bindParam(1, $endereco->getEstado());
-            $stmt->bindParam(2, $endereco->getCidade());
-            $stmt->bindParam(3, $endereco->getBairro());
-            $stmt->bindParam(4, $endereco->getCep());
-            $stmt->bindParam(5, $endereco->getDescricao());
-            $stmt->bindParam(6, $endereco->getIdEndereco());
+            $stmt->bindParam(2, $endereco->getLogadouro());
+            $stmt->bindParam(3, $endereco->getCidade());
+            $stmt->bindParam(4, $endereco->getBairro());
+            $stmt->bindParam(5, $endereco->getCep());
+            $stmt->bindParam(6, $endereco->getDescricao());
+            $stmt->bindParam(7, $endereco->getIdEndereco());
 
             return $stmt->execute();
         } catch (Excepetion $e) {

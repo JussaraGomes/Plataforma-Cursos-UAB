@@ -5,192 +5,248 @@
 // criar if para verificar formato dos arquivos que podem ser usados na aula
 // capturar data do sistema
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/EnderecoFacade.php"); 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/PlataformaFacade.php"); 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/AdministradorFacade.php"); 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/AlunoFacade.php"); 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/ProfessorFacade.php"); 
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Facade/CursoFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/EnderecoFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/ColaboradorFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/NoticiaFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/PlataformaFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/AdministadorFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/AlunoFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/ProfessorFacade.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Facade/CursoFacade.php"); 
 
+$window_location_href = "../Geral_Index.php";
+$mensagem = "";
 
- $idEndereco = "";
- 
  // ==================================================================================================================================================
  // CADASTRO ENDEREÇO
  // ==================================================================================================================================================
  function cadastrarEndereco(){
-	 
-	if(isset($_POST['cadastrar_endereco'])){ 
-	
 		$estado = $_POST['estado'];   		
+		$logadouro = $_POST['logadouro'];   		
 		$cidade = $_POST['cidade']; 		
 		$bairro = $_POST['bairro'];   	
 		$cep = $_POST['cep']; 		
 		$descricao = $_POST['descricao'];   	 
-		
-			
-		if(!empty($estado) && !empty($cidade) && !empty($cep) && !empty($descricao)) 				  
-			return EnderecoFacade::getInstance()->cadastrarEndereco($estado, $cidade, $bairro, $cep, $descricao);
+					
+		if(!empty($estado) && !empty($logadouro) && !empty($cidade) && !empty($cep) && !empty($descricao)) 			
+			return EnderecoFacade::getInstance()->cadastrarEndereco($estado, $logadouro, $cidade, $bairro, $cep, $descricao);
 		else
-			return false;
-	}
- }
-  
-  if(isset($_POST['cadastrar_plataforma'])){
-	 
-	if(cadastrarEndereco()){
-		
-		$idEnderecoPlataforma =  // pega como retorno o id do endereco criado
-		$nomePlataforma = $_POST['nomePlataforma']; 
-		$emailPlataforma = $_POST['emailPlataforma'];
-		$descricaoPlataforma = $_POST['descricaoPlataforma'];
-		$primeiroTelefonePlataforma = $_POST['primeiroTelefonePlataforma'];
-		$segundoTelefonePlataforma = $_POST['segundoTelefonePlataforma'];
-		
-		if(!empty($idEnderecoPlataforma) && !empty($nomePlataforma) && !empty($emailPlataforma) && !empty($descricaoPlataforma) && !empty($primeiroTelefonePlataforma && !empty($segundoTelefonePlataforma)){
-		
-			$confirmacaoCadPlataforma = PlataformaFacade::getInstance()->adicionarPlataforma($idEnderecoPlataforma, $nomePlataforma, $emailPlataforma, $descricaoPlataforma, $primeiroTelefonePlataforma, $segundoTelefonePlataforma);
-			
-			if($confirmacaoCadPlataforma){ 
-				
-				echo"<script language='javascript' type='text/javascript'>alert('Cadastro de plataforma realizado com sucesso!');window.location.href='../telas/Registro.php'</script>";			
-			}	
-			else{ 
-				echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro da plataforma.');window.location.href='../telas/Registro.php'</script>";
-			}
-		}
-		else
-			echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prossegui com o cadastro da plataforma!');window.location.href='../telas/Registro.php'</script>";		
-	}
-	else
-		echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro do seu endereço.');window.location.href='../telas/Registro.php'</script>";
-	 	 
+			return -1;	
  }
  
  // ==================================================================================================================================================
  // CADASTRO ADMINISTRADOR
  // ==================================================================================================================================================
- else if(isset($_POST['cadastrar_administrador'])){
-	 
-	if(cadastrarEndereco()){
+ if(isset($_POST['cadastrar_administrador'])){
+	
+	$window_location_href = "../Geral_Login.php";
+ 
+	$idEnderecoAdministrador = cadastrarEndereco();
+
+	if($idEnderecoAdministrador <> -1){
 			
-		$idEnderecoAdministrador =  // pega como retorno o id do endereco criado
 		$cpfAdministrador = $_POST['cpfAdministrador']; 
 		$nomeAdministrador = $_POST['nomeAdministrador'];
 		$emailAdministrador = $_POST['emailAdministrador'];
-		$senhaAdmiistrador = $_POST['senhaAdmiistrador'];
-		$primeiroTelefoneAdministrador = $_POST['primeiroTelefoneAdministrador'];
-		$segundoTelefoneAdministrador = $_POST['segundoTelefoneAdministrador'];
+		$senhaAdmiistrador = $_POST['senhaAdministrador'];
+		$telefone = $_POST['telefone'];
 		
-		if(!empty($idEnderecoAdministrador) && !empty($cpfAdministrador) && !empty($nomeAdministrador) && !empty($emailAdministrador) && !empty($senhaAdmiistrador) && !empty($primeiroTelefoneAdministrador)){
-		
-			if(empty($segundoTelefoneAdministrador){
-				
-				$confirmacaoCadAdministrador = AdministradorFacade::getInstance()->cadastrarAdministrador($cpfAdministrador, $idEnderecoAdministrador, $nomeAdministrador, $emailAdministrador, $senhaAdmiistrador, $primeiroTelefoneAdministrador);
-			
-			} else if(!empty($segundoTelefoneAdministrador){
-			
-				$confirmacaoCadAdministrador = AdministradorFacade::getInstance()->cadastrarAdministrador_($cpfAdministrador, $idEnderecoAdministrador, $nomeAdministrador, $emailAdministrador, $senhaAdmiistrador, $primeiroTelefoneAdministrador, $segundoTelefoneAdministrador);
-			}
-			
-			if($confirmacaoCadAdministrador){ 
-				
-				echo"<script language='javascript' type='text/javascript'>alert('Cadastro de Administrador realizado com sucesso!');window.location.href='../telas/Registro.php'</script>";			
-			}	
-			else{ 
-				echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro do novo administrador.');window.location.href='../telas/Registro.php'</script>";
-			}
+		if(!empty($cpfAdministrador) && !empty($nomeAdministrador) && !empty($emailAdministrador) && !empty($senhaAdmiistrador) && !empty($telefone)){
+					
+			$confirmacaoCadAdministrador = AdministadorFacade::getInstance()->cadastrarAdministrador($cpfAdministrador, $idEnderecoAdministrador, $nomeAdministrador, $emailAdministrador, $senhaAdmiistrador, $telefone);
+								
+			$mensagem = $confirmacaoCadAdministrador ? "CADASTRO DE ADMINISTRADOR REALIZADO COM SUCESSO!" : "HOUVE UM ERRO NO CADASTRO DO ADMINISTRADOR.";
 		}
 		else
-			echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prossegui com o cadastro do novo administrador!');window.location.href='../telas/Registro.php'</script>";
-	}	
+			$mensagem = "PREENCHA TODOS OS CAMPOS ANTES DE PROCEGUIR.";		
+	}
 	else
-		echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro do seu endereço.');window.location.href='../telas/Registro.php'</script>";
+		$mensagem = "HOUVE UM ERRO NO CADASTRO DO ENDEREÇO";
  }
  
  // ==================================================================================================================================================
  // CADASTRO PROFESSOR
  // ==================================================================================================================================================
  else if(isset($_POST['cadastrar_professor'])){
-	 
-	if(cadastrarEndereco()){
+	 	
+	$window_location_href = "../Geral_Login.php";
+
+	$idEnderecoProfessor = cadastrarEndereco();
+
+	if($idEnderecoProfessor <> -1){
 		
-		$idEnderecoProfessor =  // pega como retorno o id do endereco criado
 		$cpfProfessor = $_POST['cpfProfessor']; 
 		$nomeProfessor = $_POST['nomeProfessor'];
 		$emailProfessor = $_POST['emailProfessor'];
 		$senhaProfessor = $_POST['senhaProfessor'];
-		$primeiroTelefoneProfessor = $_POST['primeiroTelefoneProfessor'];
-		$segundoTelefoneProfessor = $_POST['segundoTelefoneProfessor'];
+		$primeiroTelefoneProfessor = $_POST['telefone'];
 		
-		if(!empty($idEnderecoProfessor) && !empty($cpfProfessor) && !empty($nomeProfessor) && !empty($emailProfessor) && !empty($senhaProfessor) && !empty($primeiroTelefoneProfessor)){
-		
-			if(empty($segundoTelefoneProfessor){
+		if(!empty($idEnderecoProfessor) && !empty($cpfProfessor) && !empty($nomeProfessor) && !empty($emailProfessor) && !empty($senhaProfessor) && !empty($primeiroTelefoneProfessor) && (isset($_FILES['imagemProfessor']['name']) && $_FILES['imagemProfessor']['error'] == 0)){
 				
-				$confirmacaoCadProfessor = ProfessorFacade::getInstance()->adicionarNovoProfessor($cpfProfessor, $idEnderecoProfessor, $nomeProfessor, $emailProfessor, $senhaProfessor, $primeiroTelefoneProfessor);
-			
-			} else if(!empty($segundoTelefoneAdministrador){
-			
-				$confirmacaoCadProfessor = ProfessorFacade::getInstance()->adicionarNovoProfessor_($cpfProfessor, $idEnderecoProfessor, $nomeProfessor, $emailProfessor, $senhaProfessor, $primeiroTelefoneProfessor, $segundoTelefoneProfessor);
-			}
-			
-			if($confirmacaoCadProfessor){ 
 				
-				echo"<script language='javascript' type='text/javascript'>alert('Cadastro de Professor realizado com sucesso!');window.location.href='../telas/Registro.php'</script>";			
-			}	
-			else{ 
-				echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro do novo professor.');window.location.href='../telas/Registro.php'</script>";
+			$arquivo_tmp = $_FILES[ 'imagemProfessor' ][ 'tmp_name' ];
+			$nomeFT      = $_FILES[ 'imagemProfessor' ][ 'name' ];
+				
+			$extensao = pathinfo($nomeFT, PATHINFO_EXTENSION); 	// Pega a extensão		
+			$extensao = strtolower($extensao);               	// Converte a extensão para minúsculo
+			
+			if ( strstr('.jpg;.jpeg;.gif;.png', $extensao)) { 	// Somente imagens, .jpg;.jpeg;.gif;.png
+			
+				$nomeFoto = md5($cpfProfessor. $nomeProfessor).".".$extensao;
+				
+				$url_foto = $_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Uploads/Professores/".$nomeFoto; 
+
+				if (@move_uploaded_file($arquivo_tmp, $url_foto)){  					
+							
+					$confirmacaoCadProfessor = ProfessorFacade::getInstance()->adicionarNovoProfessor($cpfProfessor, $idEnderecoProfessor, $nomeProfessor, $emailProfessor, $senhaProfessor, $primeiroTelefoneProfessor, $url_foto);
+														
+					$mensagem = $confirmacaoCadProfessor ? "CADASTRO DE PROFESSOR REALIZADO COM SUCESSO!" : "HOUVE UM ERRO NO CADASTRO DO PROFESSOR.";
+				
+				}
+				else
+					$mensagem = "HOUVE UM ERRO DURANTE O UPLOAD DA IMAGEM.";		
 			}
+			else
+				$mensagem = "É PRECISO ANEXAR UM ARQUIVO DE IMAGEM. EXTENSÕES PERMITIDAS: .jpg .jpeg .gif .png";				
 		}
 		else
-			echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prossegui com o cadastro do novo professor!');window.location.href='../telas/Registro.php'</script>";
-	}	
+			$mensagem = "PREENCHA TODOS OS CAMPOS ANTES DE PROCEGUIR.";		
+	}
 	else
-		echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro do seu endereço.');window.location.href='../telas/Registro.php'</script>";
+		$mensagem = "HOUVE UM ERRO NO CADASTRO DO ENDEREÇO";
  }
   
  // ==================================================================================================================================================
  // CADASTRO ALUNO
  // ==================================================================================================================================================
  else if(isset($_POST['cadastrar_aluno'])){
-	 
-	if(cadastrarEndereco()){
-		$idEnderecoAluno =  // pega como retorno o id do endereco criado
+	
+	$window_location_href = "../Aluno_Login.php";
+
+	$idEnderecoAluno = cadastrarEndereco();
+
+	if($idEnderecoAluno <> -1){
 		$cpfAluno = $_POST['cpfAluno']; 
 		$nomeAluno = $_POST['nomeAluno'];
 		$emailAluno = $_POST['emailAluno'];
 		$senhaAluno = $_POST['senhaAluno'];
-		$primeiroTelefoneAluno = $_POST['primeiroTelefoneAluno'];
-		$segundoTelefoneAluno = $_POST['segundoTelefoneAluno'];
+		$telefone = $_POST['telefone'];
 		
-		if(!empty($idEnderecoAluno) && !empty($cpfAluno) && !empty($nomeAluno) && !empty($emailAluno) && !empty($senhaAluno) && !empty($primeiroTelefoneAluno)){
 		
-			if(empty($segundoTelefoneAluno){
-				
-				$confirmacaoCadAluno = AlunoFacade::getInstance()->adicionarNovoAluno($cpfAluno, $idEnderecoAluno, $nomeAluno, $emailAluno, $senhaAluno, $primeiroTelefoneAluno);
-				
-				
-			} else if(!empty($segundoTelefoneAluno){
-				
-				$confirmacaoCadAluno = AlunoFacade::getInstance()->adicionarNovoAluno_($cpfAluno, $idEnderecoAluno, $nomeAluno, $emailAluno, $senhaAluno, $primeiroTelefoneAluno, $segundoTelefoneAluno);
+		if(!empty($cpfAluno) && !empty($nomeAluno) && !empty($emailAluno) && !empty($senhaAluno) && !empty($telefone)){
+						
+			$confirmacaoCadAluno = AlunoFacade::getInstance()->adicionarNovoAluno($cpfAluno, $idEnderecoAluno, $nomeAluno, $emailAluno, $senhaAluno, $telefone);
 			
-			}
-			
-			if($confirmacaoCadAluno){ 
-				
-				echo"<script language='javascript' type='text/javascript'>alert('Cadastro de aluno realizado com sucesso!');window.location.href='../telas/Registro.php'</script>";			
-			}	
-			else{ 
-				echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro do novo aluno.');window.location.href='../telas/Registro.php'</script>";
-			}
+			$mensagem = $confirmacaoCadAluno ? "CADASTRO DE ALUNO REALIZADO COM SUCESSO!" : "HOUVE UM ERRO NO CADASTRO DO ALUNO.";
 		}
 		else
-			echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prossegui com o cadastro do novo aluno!');window.location.href='../telas/Registro.php'</script>";
+			$mensagem = "PREENCHA TODOS OS CAMPOS ANTES DE PROCEGUIR.";		
 	}	
 	else
-		echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro do seu endereço.');window.location.href='../telas/Registro.php'</script>";
+		$mensagem = "HOUVE UM ERRO NO CADASTRO DO ENDEREÇO.";
  }
    
+ // ==================================================================================================================================================
+ // CADASTRO COLABORADOR
+ // ==================================================================================================================================================
+ else if(isset($_POST['cadastrar_colaborador'])){
+	
+	$idEnderecoColaborador = cadastrarEndereco();
+
+	if($idEnderecoColaborador <> -1){
+		
+		$nomeColaborador = $_POST['nomeColaborador']; 
+		$emailColaborador = $_POST['emailColaborador'];
+		$primeiroTelefoneColaborador = $_POST['primeiroTelefone'];
+		$nomeFuncao = $_POST['funcao'];
+		$descricaoFuncao = $_POST['descricaoFuncao'];		
+		$colaboradorCPF = $_POST['colaboradorCPF']; 
+
+	
+		if(!empty($nomeColaborador) && !empty($colaboradorCPF) && !empty($emailColaborador) && !empty($primeiroTelefoneColaborador)  && !empty($nomeFuncao) && !empty($descricaoFuncao) && (isset($_FILES['imagemColaborador']['name']) && $_FILES['imagemColaborador']['error'] == 0)){
+						
+
+			$arquivo_tmp = $_FILES[ 'imagemColaborador' ][ 'tmp_name' ];
+			$nomeFT      = $_FILES[ 'imagemColaborador' ][ 'name' ];
+				
+			$extensao = pathinfo($nomeFT, PATHINFO_EXTENSION); 	// Pega a extensão		
+			$extensao = strtolower($extensao);               	// Converte a extensão para minúsculo
+			
+			if ( strstr('.jpg;.jpeg;.gif;.png', $extensao)) { 	// Somente imagens, .jpg;.jpeg;.gif;.png
+			
+				$nomeFoto = md5($colaboradorCPF. $nomeColaborador).".".$extensao;
+				
+				$url_foto = $_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Uploads/Colaboradores/".$nomeFoto; 
+
+				if (@move_uploaded_file($arquivo_tmp, $url_foto)){  
+					
+					$confirmacaoCadColaborador = ColaboradorFacade::getInstance()->adicionarNovoColaborador($colaboradorCPF, $idEnderecoColaborador, $nomeColaborador, $emailColaborador, $primeiroTelefoneColaborador, $nomeFuncao, $descricaoFuncao, $nomeFoto);
+					
+					$mensagem = $confirmacaoCadColaborador ? "CADASTRO DE COLABORADOR REALIZADO COM SUCESSO!" : "HOUVE UM ERRO NO CADASTRO DO COLABORADOR.";
+				
+				}
+				else
+					$mensagem = "HOUVE UM ERRO DURANTE O UPLOAD DA IMAGEM.";		
+			}
+			else
+				$mensagem = "É PRECISO ANEXAR UM ARQUIVO DE IMAGEM. EXTENSÕES PERMITIDAS: .jpg .jpeg .gif .png";				
+		}
+		else
+			$mensagem = "PREENCHA TODOS OS CAMPOS ANTES DE PROCEGUIR.";		
+	}	
+	else
+		$mensagem = "HOUVE UM ERRO NO CADASTRO DO ENDEREÇO.";		
+ }
+   
+ // ==================================================================================================================================================
+ // CADASTRO Notícia
+ // ==================================================================================================================================================
+ else if(isset($_POST['cadastrar_noticia'])){
+
+	$tituloNoticia = $_POST['tituloNoticia']; 
+	$dataPublicacaoNoticia = $_POST['dataPublicacao'];
+	$breveDescricaoNoticia = $_POST['breveDescricao'];
+	$corpoNoticia = $_POST['corpoNoticia'];
+		
+	
+	if(!empty($tituloNoticia) && !empty($dataPublicacaoNoticia) && !empty($breveDescricaoNoticia) && !empty($corpoNoticia)){
+			
+		$confirmacaoCadNoticia = false;
+		
+		//Não é obrigatório anexar foto				
+		if (isset($_FILES['imagemNoticia']['name']) && $_FILES['imagemNoticia']['error'] == 0) {
+
+			$arquivo_tmp = $_FILES[ 'imagemNoticia' ][ 'tmp_name' ];
+			$nomeFT      = $_FILES[ 'imagemNoticia' ][ 'name' ];
+				
+			$extensao = pathinfo($nomeFT, PATHINFO_EXTENSION); 	// Pega a extensão		
+			$extensao = strtolower($extensao);               	// Converte a extensão para minúsculo
+			
+			if ( strstr('.jpg;.jpeg;.gif;.png', $extensao)) { 	// Somente imagens, .jpg;.jpeg;.gif;.png
+			
+				$nomeFoto = md5($tituloNoticia. $dataPublicacaoNoticia).".".$extensao;
+				
+				$url_foto = $_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Uploads/Noticias/".$nomeFoto; 
+
+				if (@move_uploaded_file($arquivo_tmp, $url_foto))  
+					$confirmacaoCadNoticia = NoticiaFacade::getInstance()->adicionarNovaNoticia($tituloNoticia, $breveDescricaoNoticia, $corpoNoticia, $dataPublicacaoNoticia, $nomeFoto);				
+				else
+					$mensagem = "HOUVE UM ERRO DURANTE O UPLOAD DA IMAGEM.";		
+			}
+			else
+				$mensagem = "É PRECISO ANEXAR UM ARQUIVO DE IMAGEM. EXTENSÕES PERMITIDAS: .jpg .jpeg .gif .png";		
+		}
+		else			
+			$confirmacaoCadNoticia = NoticiaFacade::getInstance()->adicionarNovaNoticia($tituloNoticia, $breveDescricaoNoticia, $corpoNoticia, $dataPublicacaoNoticia, null);
+		
+		
+		$mensagem = $confirmacaoCadNoticia ? "CADASTRO DE NOTÍCIA REALIZADO COM SUCESSO!" : "HOUVE UM ERRO NO CADASTRO DA NOTÍCIA.";
+		
+	}
+	else
+		$mensagem = "PREENCHA TODOS OS CAMPOS ANTES DE PROCEGUIR.";		
+	
+ }
  // ==================================================================================================================================================
  // CADASTRO CURSO
  // ==================================================================================================================================================
@@ -203,22 +259,35 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Faca
 	$preRequisitosCurso = $_POST['preRequisitosCurso'];
 	$modalidadeCurso = $_POST['modalidadeCurso'];
 	
-	if(!empty($nomeCurso) && !empty($descricaoCurso) && !empty($nivelDificuldadeCurso) && !empty($cargaHorariaCurso) && !empty($preRequisitosCurso) && !empty($modalidadeCurso)){
-	
-		
-			$confirmacaoCadCurso = CursoFacade::getInstance()->adicionarNovoCurso($nomeCurso, $descricaoCurso, $nivelDificuldadeCurso, $cargaHorariaCurso, $preRequisitosCurso, $modalidadeCurso);
-		
-		
-		if($confirmacaoCadCurso){ 
+	if(!empty($nomeCurso) && !empty($descricaoCurso) && !empty($nivelDificuldadeCurso) && !empty($cargaHorariaCurso) && !empty($preRequisitosCurso) && !empty($modalidadeCurso) && (isset($_FILES['imagemCurso']['name']) && $_FILES['imagemCurso']['error'] == 0)){
+						
+			$arquivo_tmp = $_FILES[ 'imagemCurso' ][ 'tmp_name' ];
+			$nomeFT      = $_FILES[ 'imagemCurso' ][ 'name' ];
+				
+			$extensao = pathinfo($nomeFT, PATHINFO_EXTENSION); 	// Pega a extensão		
+			$extensao = strtolower($extensao);               	// Converte a extensão para minúsculo
 			
-			echo"<script language='javascript' type='text/javascript'>alert('Curso cadastrado com sucesso!');window.location.href='../telas/Registro.php'</script>";			
-		}	
-		else{ 
-			echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro do  curso.');window.location.href='../telas/Registro.php'</script>";
-		}
+	
+			if ( strstr('.jpg;.jpeg;.gif;.png', $extensao)) { 	// Somente imagens, .jpg;.jpeg;.gif;.png
+			
+				$nomeFoto = md5($nomeCurso).".".$extensao;
+				
+				$url_foto = $_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Uploads/Cursos/".$nomeFoto; 
+
+				if (@move_uploaded_file($arquivo_tmp, $url_foto)){  
+					
+					$confirmacaoCadCurso = CursoFacade::getInstance()->adicionarNovoCurso($nomeCurso, $descricaoCurso, $nivelDificuldadeCurso, $cargaHorariaCurso, $preRequisitosCurso, $modalidadeCurso, $nomeFoto);	
+					
+					$mensagem = $confirmacaoCadCurso ? "CADASTRO DE CURSO REALIZADO COM SUCESSO!" : "HOUVE UM ERRO NO CADASTRO DO CURSO.";
+				
+				}else
+					$mensagem = "HOUVE UM ERRO DURANTE O UPLOAD DA IMAGEM.";		
+			}
+			else
+				$mensagem = "É PRECISO ANEXAR UM ARQUIVO DE IMAGEM. EXTENSÕES PERMITIDAS: .jpg .jpeg .gif .png";		
 	}
 	else
-		echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prossegui com o cadastro do novo curso!');window.location.href='../telas/Registro.php'</script>";
+		$mensagem = "PREENCHA TODOS OS CAMPOS ANTES DE PROCEGUIR.";		
  }
  
  // ==================================================================================================================================================
@@ -230,21 +299,14 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Faca
 	$nomeAula = $_POST['nomeAula'];
 	
 	if(!empty($idModuloAula) && !empty($nomeAula)){
-	
+
+		$confirmacaoCadAula = AulaFacade::getInstance()->adicionarNovaAula($idModuloAula, $nomeAula);
 		
-			$confirmacaoCadAula = AulaFacade::getInstance()->adicionarNovaAula($idModuloAula, $nomeAula);
-		
-		
-		if($confirmacaoCadAula){ 
-			
-			echo"<script language='javascript' type='text/javascript'>alert('Aula Cadastrada com sucesso!');window.location.href='../telas/Registro.php'</script>";			
-		}	
-		else{ 
-			echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro da  aula.');window.location.href='../telas/Registro.php'</script>";
-		}
+		$mensagem = $confirmacaoCadAula ? "CADASTRO DE AULA REALIZADO COM SUCESSO!" : "HOUVE UM ERRO NO CADASTRO DA AULA.";
+
 	}
 	else
-		echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prossegui com o cadastro da nova aula!');window.location.href='../telas/Registro.php'</script>";
+		$mensagem = "PREENCHA TODOS OS CAMPOS ANTES DE PROCEGUIR.";		
  }
   
  // ==================================================================================================================================================
@@ -258,21 +320,14 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Faca
 	$arquivoMaterial = $_POST['arquivoMaterial'];
 	
 	if(!empty($idModuloAula) && !empty($nomeAula)){
-	
-		
-			$confirmacaoCadMaterial = MaterialFacade::getInstance()->adicionarNovoMaterial($idAulaModulo, $nomeMaterialModulo, $tipoMaterial, $arquivoMaterial);
-		
-		
-		if($confirmacaoCadMaterial){ 
 			
-			echo"<script language='javascript' type='text/javascript'>alert('Material da aula cadastrado com sucesso!');window.location.href='../telas/Registro.php'</script>";			
-		}	
-		else{ 
-			echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro dos materiais da  aula.');window.location.href='../telas/Registro.php'</script>";
-		}
+		$confirmacaoCadMaterial = MaterialFacade::getInstance()->adicionarNovoMaterial($idAulaModulo, $nomeMaterialModulo, $tipoMaterial, $arquivoMaterial);
+		
+		$mensagem = $confirmacaoCadMaterial ? "CADASTRO DE MATERIAL REALIZADO COM SUCESSO!" : "HOUVE UM ERRO NO CADASTRO DO MATERIAL.";
+
 	}
 	else
-		echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prossegui com o cadastro dos materiais da aula.');window.location.href='../telas/Registro.php'</script>";
+		$mensagem = "PREENCHA TODOS OS CAMPOS ANTES DE PROCEGUIR.";		
  }
   
  // ==================================================================================================================================================
@@ -285,21 +340,14 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Faca
 	$nota_Avaliacao = $_POST['nota_Avaliacao'];
 	
 	if(!empty($idMatricula_Avaliacao) && !empty($idProva_Avaliacao) && !empty($nota_Avaliacao)){
-	
-		
-			$confirmacaoCadAvaliacao = AvaliacaoFacade::getInstance()->adicionarNovoMaterial($idAula, $nomeMaterial, $tipoMaterial, $arquivo);
 			
-		
-		if($confirmacaoCadAvaliacao){ 
+		$confirmacaoCadAvaliacao = AvaliacaoFacade::getInstance()->adicionarNovoMaterial($idAula, $nomeMaterial, $tipoMaterial, $arquivo);
 			
-			echo"<script language='javascript' type='text/javascript'>alert('Avaliação cadastrada com sucesso!');window.location.href='../telas/Registro.php'</script>";			
-		}	
-		else{ 
-			echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro da avaliação.');window.location.href='../telas/Registro.php'</script>";
-		}
+		$mensagem = $confirmacaoCadAvaliacao ? "CADASTRO DE AVALIACAO REALIZADO COM SUCESSO!" : "HOUVE UM ERRO NO CADASTRO DO MATERIAL.";
+
 	}
 	else
-		echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prossegui com o cadastro da nova avaliação!');window.location.href='../telas/Registro.php'</script>";
+		$mensagem = "PREENCHA TODOS OS CAMPOS ANTES DE PROCEGUIR.";		
  }
  
  // ==================================================================================================================================================
@@ -312,49 +360,43 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Faca
 	$dataMatricula_Matricula = $_POST['dataMatricula_Matricula'];
 	
 	if(!empty($idCurso_Matricula) && !empty($cpfAluno_Matricula) && !empty($dataMatricula_Matricula)){
+			
+		$confirmacaoCadMatricula = MatriculaFacade::getInstance()->adicionarnovaMatricula($idCurso_Matricula, $cpfAluno_Matricula, $dataMatricula_Matricula);
 	
-		
-			$confirmacaoCadMatricula = MatriculaFacade::getInstance()->adicionarnovaMatricula($idCurso_Matricula, $cpfAluno_Matricula, $dataMatricula_Matricula);
-			
-		
-		if($confirmacaoCadMatricula){ 
-			
-			echo"<script language='javascript' type='text/javascript'>alert('Matricula cadastrada com sucesso!');window.location.href='../telas/Registro.php'</script>";			
-		}	
-		else{ 
-			echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro da nova matricula.');window.location.href='../telas/Registro.php'</script>";
-		}
+		$mensagem = $confirmacaoCadMatricula ? "MATRICULA REALIZADA COM SUCESSO!" : "HOUVE UM ERRO NA REALIZAÇÃO DA MATRICULA.";			
+	
 	}
 	else
-		echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prossegui com o cadastro da nova matricula!');window.location.href='../telas/Registro.php'</script>";
+		$mensagem = "PREENCHA TODOS OS CAMPOS ANTES DE PROCEGUIR.";		
  }
  
  // ==================================================================================================================================================
  // CADASTRO PERGUNTA
  // ==================================================================================================================================================
-  else if(isset($_POST['cadastrar_pergunta'])){
+  /*else if(isset($_POST['cadastrar_pergunta'])){
 	 
 	$idCurso_Pergunta = $_POST['idCurso_Pergunta']; 
 	$textoPergunta_Pergunta = $_POST['textoPergunta_Pergunta'];
 	$dataPergunta_Pergunta = // buscar no sistema 
 	
 	if(!empty($idCurso_Pergunta) && !empty($textoPergunta_Pergunta) && !empty($dataPergunta_Pergunta)){
-	
 		
-			$confirmacaoCadPergunta = PerguntaFacade::getInstance()->adicionarPergunta($idCurso_Pergunta, $textoPergunta_Pergunta, $dataPergunta_Pergunta);
+		$confirmacaoCadPergunta = PerguntaFacade::getInstance()->adicionarPergunta($idCurso_Pergunta, $textoPergunta_Pergunta, $dataPergunta_Pergunta);
 			
+		$mensagem = $confirmacaoCadPergunta ? "PERGURA REALIZADA COM SUCESSO!" : "HOUVE UM ERRO NA REALIZAÇÃO DA PERGUNTA.";
 		
-		if($confirmacaoCadPergunta){ 
-			
-			echo"<script language='javascript' type='text/javascript'>alert('Pergunta cadastrada com sucesso!');window.location.href='../telas/Registro.php'</script>";			
-		}	
-		else{ 
-			echo"<script language='javascript' type='text/javascript'>alert('Houve um erro no cadastro da nova pergunta.');window.location.href='../telas/Registro.php'</script>";
-		}
 	}
 	else
 		echo"<script language='javascript' type='text/javascript'>alert('Preencha todos os campos para prossegui com o cadastro da nova pergunta!');window.location.href='../telas/Registro.php'</script>";
  }
+ */
+ 
+	$window_location_href = $window_location_href."?returnMessage=".base64_encode($mensagem);
+	
+ 	echo"<script language='javascript' type='text/javascript'> window.location.href='", $window_location_href, "'</script>";	
+
+ 
+ 
 ?>
 
 

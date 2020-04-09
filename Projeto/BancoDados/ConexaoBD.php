@@ -6,6 +6,15 @@ class ConexaoDB {
 
 	public function __construct() {
 
+		//Servidor remoto
+		/*
+		$servidor = "69.167.172.78";
+		$usuario = "boaini_usuario";
+		$senha ="111111";
+		$dbname = "boaini_boainiciativa";
+		$porta = "2082";
+		*/
+
 	}
 
 	public static function getConexaoPDO(){
@@ -15,10 +24,14 @@ class ConexaoDB {
 			$servidor = "localhost";
 			$usuario = "root";
 			$senha ="";
-			$dbname = "UAB_Plataforma";
+			$dbname = "uab_plataforma";
+			$porta = "3308";
+			
+			array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8");
 
 			try{
-				self::$pdo = new PDO("mysql:host={$servidor}; dbname={$dbname}",$usuario, $senha, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			
+				self::$pdo = new PDO("mysql:host={$servidor}; port={$porta}; dbname={$dbname}",$usuario, $senha, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));				
 				self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::$pdo->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
 			} 
@@ -27,6 +40,7 @@ class ConexaoDB {
 				exit();
 			}
 		}
+
 		return self::$pdo;
 	}
 	

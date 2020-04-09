@@ -1,12 +1,12 @@
 <?php
 
-require("ConexaoBD.php");
-require_once("ConsultasSQL.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/Projetos/"."/Projeto_Plataforma/"."Model/Aluno.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Aluno.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/ConexaoBD.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/ConsultasSQL.php");
 
 class AlunoDAO {
 
-    private $instance;
+    private static $instance;
 
     public function __construct() {
     }
@@ -20,7 +20,7 @@ class AlunoDAO {
 
     public function popularAluno($row) { 
         $aluno = new Aluno(
-                $row['CPF_Aluno'], $row['Id_Endereco'], $row['Nome'], $row['Email'], $row['Senha'], $row['Primeiro_Telefone'], $row['Segundo_Telefone'], $row['Bloqueado']);
+                $row['CPF_Aluno'], $row['Id_Endereco'], $row['Nome'], $row['Email'], $row['Senha'], $row['Primeiro_Telefone'], $row['Bloqueado']);
         return $aluno;
     }
 	
@@ -30,7 +30,7 @@ class AlunoDAO {
     public function adicionarNovoAluno($aluno) {
 
         try {
-            $sql = Sql::getInstance()->adicionarNovoAluno_SQL();
+            $sql = ConsultasSQL::getInstance()->adicionarNovoAluno_SQL();
             $stmt = ConexaoDB::getConexaoPDO()->prepare($sql);
 			
             $stmt->bindParam(1, $aluno->getCpfAluno());
@@ -38,7 +38,8 @@ class AlunoDAO {
             $stmt->bindParam(3, $aluno->getNome());
             $stmt->bindParam(4, $aluno->getEmail());
             $stmt->bindParam(5, $aluno->getSenha());
-            $stmt->bindParam(6, $aluno->getPrimeiroTelefone());
+            $stmt->bindParam(6, $aluno->getTelefone());
+           // $stmt->bindParam(7, $aluno->getBloqueado());
 			
 			return $stmt->execute();
 
@@ -46,27 +47,19 @@ class AlunoDAO {
             echo "<br> Erro AlunoDAO (adicionarNovoAluno)- Código: " . $e->getCode() . " Mensagem: " . $e->getMessage();
         }
     }
-	
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-    // Adiciona um novo administrador com dois telefones
-    public function adicionarNovoAdministrador_($aluno) {
-
+    
+	public function verificarAlunoCPF($cpf) {
         try {
-            $sql = Sql::getInstance()->adicionarNovoAluno2Tel_SQL();
+            $sql = ConsultasSQL::getInstance()->buscarAluno_SQL();			
             $stmt = ConexaoDB::getConexaoPDO()->prepare($sql);
-            $stmt->bindParam(1, $aluno->getCpfAluno());
-            $stmt->bindParam(2, $aluno->getIdEndereco());
-            $stmt->bindParam(3, $aluno->getNome());
-            $stmt->bindParam(4, $aluno->getEmail());
-            $stmt->bindParam(5, $aluno->getSenha());
-            $stmt->bindParam(6, $aluno->getPrimeiroTelefone());
-            $stmt->bindParam(7, $aluno->getSegundoTelefone());
+			
+            $stmt->bindParam(1, $cpf);
+            $stmt->execute();
             
-			return $stmt->execute();
+			return ($stmt->rowCount() != 0);
 			
         } catch (Exception $e) {
-            echo "<br> Erro AlunoDAO (adicionarNovoAluno_) - Código: " . $e->getCode() . " Mensagem: " . $e->getMessage();
+            echo "<br> Erro AlunoDAO (buscarAlunoCPF) - Código: " . $e->getCode() . " Mensagem: " . $e->getMessage();
         }
     }
 
@@ -75,7 +68,7 @@ class AlunoDAO {
     // Busca um administrador atravéz do CPF
     public function buscarAlunoCPF($cpf) {
         try {
-            $sql = Sql::getInstance()->buscarAluno_SQL();
+            $sql = ConsultasSQL::getInstance()->buscarAluno_SQL();
             $stmt = ConexaoDB::getConexaoPDO()->prepare($sql);
 			
             $stmt->bindParam(1, $cpf);

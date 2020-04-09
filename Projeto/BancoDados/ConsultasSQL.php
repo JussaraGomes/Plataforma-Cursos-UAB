@@ -3,7 +3,7 @@
 class ConsultasSQL { 
 
     public static $instance;
-    private $schema = "UAB_Plataforma";
+    private $schema = "uab_plataforma";
 
     protected function __construct() {
         
@@ -32,6 +32,7 @@ class ConsultasSQL {
     
     private $endereco_Id = "Id_Endereco";
     private $endereco_Estado = "Estado";
+    private $endereco_Logadouro = "Logadouro";
     private $endereco_Cidade = "Cidade";
     private $endereco_Bairro = "Bairro";
     private $endereco_CEP = "CEP";
@@ -39,7 +40,7 @@ class ConsultasSQL {
 
     // Script para inserir um novo endereco no banco 
     public function adicionarNovoEndereco_SQL() {
-        return "INSERT INTO {$this->schema}.{$this->enderecoTable} ({$this->endereco_Estado}, {$this->endereco_Cidade}, {$this->endereco_Bairro}, {$this->endereco_CEP}, {$this->endereco_Descricao}) VALUES (?, ?, ?, ?, ?)";
+        return "INSERT INTO {$this->schema}.{$this->enderecoTable} ({$this->endereco_Estado}, {$this->endereco_Logadouro}, {$this->endereco_Cidade}, {$this->endereco_Bairro}, {$this->endereco_CEP}, {$this->endereco_Descricao}) VALUES (?, ?, ?, ?, ?, ?)";
     }
 
     // Script para buscar endereço apartir do código do endereço
@@ -50,7 +51,7 @@ class ConsultasSQL {
     // Script para alterar um endereço 
     public function alterarEndereco_SQL() {
         return "UPDATE {$this->schema}.{$this->enderecoTable} SET 
-		  {$this->endereco_Estado} = ? , {$this->endereco_Cidade} = ?, {$this->endereco_Bairro} = ?, {$this->endereco_CEP} = ?, {$this->endereco_Descricao} = ? WHERE {$this->endereco_Id} = ?";
+		  {$this->endereco_Estado} = ?, {$this->endereco_Logadouro} = ?, {$this->endereco_Cidade} = ?, {$this->endereco_Bairro} = ?, {$this->endereco_CEP} = ?, {$this->endereco_Descricao} = ? WHERE {$this->endereco_Id} = ?";
     }
 
     // Script para deletar um endereco
@@ -67,15 +68,15 @@ class ConsultasSQL {
     private $plataforma_Nome = "Nome";
     private $plataforma_Email = "Email";
     private $plataforma_Descricao = "Descricao";
+    private $plataforma_ComoFunciona = "ComoFunciona";
     private $plataforma_PrimeiroTelefone = "Primeiro_Telefone";
-    private $plataforma_SegundoTelefone = "Segundo_Telefone";
     private $plataforma_LinkFacebook = "Link_Facebook";
     private $plataforma_LinkInstagram = "Link_Instagram";
     private $plataforma_LinkSite = "Link_Site";
 
     // Script para inserir plataforma (Deve ser executado o código de verificação para que não existam duas instâncias) 
     public function adicionarPlataforma_SQL() {
-        return "INSERT INTO {$this->schema}.{$this->plataformaTable} ({$this->plataforma_Id},{$this->plataforma_IdEndereco}, {$this->plataforma_Nome}, {$this->plataforma_Email}, {$this->plataforma_SegundoTelefone}, {$this->plataforma_SegundoTelefone}, {$this->plataforma_LinkFacebook}, {$this->plataforma_LinkInstagram}, {$this->plataforma_LinkSite}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO {$this->schema}.{$this->plataformaTable} ({$this->plataforma_Id},{$this->plataforma_IdEndereco}, {$this->plataforma_Nome}, {$this->plataforma_Email}, {$this->plataforma_SegundoTelefone}, {$this->plataforma_LinkFacebook}, {$this->plataforma_LinkInstagram}, {$this->plataforma_LinkSite}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     // Script para buscar dados da plataforma
@@ -91,7 +92,7 @@ class ConsultasSQL {
     // Script para alterar dados da plataforma 
     public function alterarDadosPlataforma_SQL() {
         return "UPDATE {$this->schema}.{$this->plataformaTable} SET 
-		  {$this->plataforma_Nome} = ?, {$this->plataforma_Email} = ?, {$this->plataforma_Descricao} = ?, {$this->plataforma_PrimeiroTelefone} = ?, {$this->plataforma_SegundoTelefone} = ? WHERE {$this->plataforma_Id} = ?";
+		  {$this->plataforma_Nome} = ?, {$this->plataforma_Email} = ?, {$this->plataforma_Descricao} = ?, {$this->plataforma_ComoFunciona} = ?,{$this->plataforma_PrimeiroTelefone} = ?, {$this->plataforma_LinkFacebook} = ?, {$this->plataforma_LinkInstagram} = ?, {$this->plataforma_LinkSite} = ?    WHERE {$this->plataforma_Id} = ?";
     }
 
     // Script para deletar uma plataforma
@@ -99,6 +100,37 @@ class ConsultasSQL {
         return "DELETE FROM {$this->schema}.{$this->plataformaTable} WHERE {$this->plataforma_Id} = ?";
     }
 
+//------------------------------ Tabela Noticia ----------------------------------------------------------------------------
+
+    private $noticiaTable = "Noticia";
+    
+    private $noticia_Id = "Id_Noticia";
+    private $noticia_Titulo = "Titulo";
+    private $noticia_BreveDescricao = "BreveDescricao";
+    private $noticia_CorpoNoticia = "CorpoNoticia";
+    private $noticia_DataNoticia = "DataPublicacao";
+    private $noticia_UrlFoto = "FotoNoticia";
+	
+    // Script para inserir Noticia (Deve ser executado o código de verificação para que não existam duas instâncias) 
+    public function adicionarNoticia_SQL() {
+        return "INSERT INTO {$this->schema}.{$this->noticiaTable} ({$this->noticia_Titulo}, {$this->noticia_BreveDescricao}, {$this->noticia_CorpoNoticia}, {$this->noticia_DataNoticia}, {$this->noticia_UrlFoto}) VALUES (?, ?, ?, ?, ?)";
+    }
+    
+    // Script para buscar dados da plataforma
+    public function buscarNoticiaTitulo_SQL() {
+        return "SELECT * FROM {$this->schema}.{$this->noticiaTable} WHERE {$this->noticia_Titulo} = ?";
+    }
+	
+    // Script para listar todas as notícias do banco
+	public function listarNoticias_SQL() {
+        return "SELECT * FROM {$this->schema}.{$this->noticiaTable}";
+    }
+	
+    // Script para buscar dados de uma notícia atravez do Id
+    public function buscarNoticiaId_SQL() {
+        return "SELECT * FROM {$this->schema}.{$this->noticiaTable} WHERE {$this->noticia_Id} = ?";
+    }
+   
 //------------------------------ Tabela Administrador -------------------------------------------------------------------------
 
     /*
@@ -168,7 +200,35 @@ class ConsultasSQL {
     public function bloquearDesbloquearAdministrador_SQL() {
         return "UPDATE {$this->schema}.{$this->administradorTable} SET {$this->administrador_Bloqueado}=? WHERE {$this->administrador_CPF} = ?";
     }
+ 
+//------------------------------ Tabela Colaborador -------------------------------------------------------------------------
 
+    private $colaboradorTable = "Colaborador";
+    
+    private $colaborador_CPF = "CPF_Colaborador";
+    private $colaborador_IdEndereco = "Id_Endereco";
+    private $colaborador_Nome = "Nome";
+    private $colaborador_Email = "Email";
+    private $colaborador_PrimeiroTelefone = "Primeiro_Telefone";
+    private $colaborador_Funcao = "Funcao";
+    private $colaborador_BreveDescricao = "BreveDescricao";
+    private $colaborador_Foto = "FotoColaborador";
+
+
+    // Script para inserir um novo colaborador no banco 
+    public function adicionarNovoColaborador_SQL() {
+        return "INSERT INTO {$this->schema}.{$this->colaboradorTable} ({$this->colaborador_CPF},{$this->colaborador_IdEndereco}, {$this->colaborador_Nome}, {$this->colaborador_Email}, {$this->colaborador_PrimeiroTelefone}, {$this->colaborador_Funcao}, {$this->colaborador_BreveDescricao}, {$this->colaborador_Foto}) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    }
+
+    // Script para buscar Colaborador apartir do CPF 
+    public function buscarColaborador_SQL() {
+        return "SELECT * FROM {$this->schema}.{$this->colaboradorTable} WHERE {$this->colaborador_CPF} = ?";
+    }
+	
+    // Script para listar todos os colaboradores do banco
+	public function listarColaboradores_SQL() {
+        return "SELECT * FROM {$this->schema}.{$this->colaboradorTable}";
+    }
 //------------------------------ Tabela Aluno ---------------------------------------------------------------------------------
 
     /*
@@ -262,15 +322,11 @@ class ConsultasSQL {
     private $professor_PrimeiroTelefone = "Primeiro_Telefone";
     private $professor_SegundoTelefone = "Segundo_Telefone";
     private $professor_Bloqueado = "Bloqueado";
+    private $professor_Foto = "	FotoProfessor";
 
     // Script para inserir um novo professor no banco (1 Telefone)
     public function adicionarNovoProfessor_SQL() {
-        return "INSERT INTO {$this->schema}.{$this->professorTable} ({$this->professor_CPF},{$this->professor_IdEndereco}, {$this->professor_Nome}, {$this->professor_Email}, {$this->professor_Senha}, {$this->professor_PrimeiroTelefone}) VALUES (?, ?, ?, ?, ?, ?)";
-    }
-
-    // Script para inserir um novo professor no banco (2 Telefones)
-    public function adicionarNovoProfessor2Tel_SQL() {
-        return "INSERT INTO {$this->schema}.{$this->professorTable} ({$this->professor_CPF},{$this->professor_IdEndereco}, {$this->professor_Nome}, {$this->professor_Email}, {$this->professor_Senha}, {$this->professor_PrimeiroTelefone}, {$this->professor_SegundoTelefone}) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO {$this->schema}.{$this->professorTable} ({$this->professor_CPF},{$this->professor_IdEndereco}, {$this->professor_Nome}, {$this->professor_Email}, {$this->professor_Senha}, {$this->professor_PrimeiroTelefone}, {$this->professor_Foto}) VALUES (?, ?, ?, ?, ?, ?, ?)";
     }
 
     // Script para buscar Professor apartir do CPF 
@@ -326,10 +382,11 @@ class ConsultasSQL {
     private $curso_CargaHoraria = "Carga_Horaria";
     private $curso_PreRequisitos = "Pre_Requisitos";
     private $curso_Modalidade = "Modalidade";
+    private $curso_Foto = "fotoCurso";
 
     // Script para inserir um novo curso no banco 
     public function adicionarNovoCurso_SQL() {
-        return "INSERT INTO {$this->schema}.{$this->cursoTable} ({$this->curso_Nome}, {$this->curso_Descricao}, {$this->curso_NivelDificuldade}, {$this->curso_CargaHoraria}, {$this->curso_PreRequisitos}, {$this->curso_Modalidade}) VALUES (?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO {$this->schema}.{$this->cursoTable} ({$this->curso_Nome}, {$this->curso_Descricao}, {$this->curso_NivelDificuldade}, {$this->curso_CargaHoraria}, {$this->curso_PreRequisitos}, {$this->curso_Modalidade}, {$this->curso_Foto}) VALUES (?, ?, ?, ?, ?, ?, ?)";
     }
 
     // Script para buscar curso apartir do id 
@@ -337,15 +394,19 @@ class ConsultasSQL {
         return "SELECT * FROM {$this->schema}.{$this->cursoTable} WHERE {$this->curso_Id} = ?";
     }
 
+    // Script para buscar curso apartir do nome 
+    public function buscarCursoNome_SQL() {
+        return "SELECT * FROM {$this->schema}.{$this->cursoTable} WHERE {$this->curso_Nome} = ?";
+    }
+
     // Script para listar cursos
     public function listarCurso_SQL() {
         return "SELECT * FROM {$this->schema}.{$this->cursoTable}";
     }
 
-    // Script para alterar dados de um professor (Nome, Email, Primeiro_Telefone, Segundo_Telefone)
     public function alterarDadosCurso_SQL() {
         return "UPDATE {$this->schema}.{$this->cursoTable} SET 
-		  {$this->curso_Nome} = ? , {$this->curso_Descricao} = ?, {$this->curso_NivelDificuldade} = ?, {$this->curso_CargaHoraria} = ?, {$this->curso_PreRequisitos} = ?, {$this->curso_Modalidade} = ? WHERE {$this->curso_Id} = ?";
+		  {$this->curso_Nome} = ? , {$this->curso_Descricao} = ?, {$this->curso_NivelDificuldade} = ?, {$this->curso_CargaHoraria} = ?, {$this->curso_PreRequisitos} = ?, {$this->curso_Modalidade} = ? , {$this->curso_Foto} = ? WHERE {$this->curso_Id} = ?";
     }
 
     // Script para deletar um curso

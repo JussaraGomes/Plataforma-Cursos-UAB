@@ -2,6 +2,7 @@ CREATE DATABASE UAB_Plataforma
 
 USE UAB_Plataforma
 
+
 /*---------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------ Tabela Endereco ----------------------------------------------------------------------------------------
 
@@ -10,12 +11,13 @@ USE UAB_Plataforma
 */
 
 CREATE TABLE Endereco (
-    
+
     Id_Endereco int(5) NOT NULL, 	
     Estado ENUM('Acre (AC)', 'Alagoas (AL)', 'Amapá (AP)', 'Amazonas (AM)', 'Bahia (BA)', 'Ceará (CE)', 'Distrito Federal (DF)','Espírito Santo (ES)', 'Goiás (GO)', 'Maranhão (MA)', 'Mato Grosso (MT)', 'Mato Grosso do Sul (MS)', 'Minas Gerais (MG)', 'Pará (PA)', 'Paraíba (PB)', 'Paraná (PR)', 'Pernambuco (PE)', 'Piauí (PI)', 'Rio de Janeiro (RJ)', 'Rio Grande do Norte (RN)', 'Rio Grande do Sul (RS)', 'Rondônia (RO)', 'Roraima (RR)', 'Santa Catarina (SC)', 'São Paulo (SP)', 'Sergipe (SE)', 'Tocantins (TO)'),
-    Cidade varchar(100) NOT NULL,
+    Logadouro varchar(200) NOT NULL,
+	Cidade varchar(100) NOT NULL,
     Bairro varchar(50) NOT NULL,
-    CEP int(8) NOT NULL,
+    CEP varchar(8) NOT NULL,
     Descricao varchar(500) NOT NULL	
     
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -38,13 +40,13 @@ CREATE TABLE Plataforma (
     Email varchar(50) NOT NULL,
     Senha varchar(25) NOT NULL,
     Descricao varchar(500) NOT NULL,
-    Primeiro_Telefone int(12) NOT NULL,
-    Segundo_Telefone int(12),
+    ComoFunciona varchar(500) NOT NULL,
+    Primeiro_Telefone varchar(12) NOT NULL,
 	Link_Facebook varchar(200) DEFAULT NULL,
 	Link_Instagram varchar(200) DEFAULT NULL,
 	Link_Site varchar(200) DEFAULT NULL,
 
-    CONSTRAINT UC_Administrador UNIQUE (email, Primeiro_Telefone, Segundo_Telefone)
+    CONSTRAINT UC_Administrador UNIQUE (email, Primeiro_Telefone)
 	
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -56,6 +58,55 @@ ALTER TABLE Plataforma ADD CONSTRAINT fk_Plataforma_IdEndereco FOREIGN KEY (Id_E
 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
+------------------------------ Tabela Noticia -------------------------------------------------------------------------------------------
+
+	
+*/
+
+CREATE TABLE Noticia ( 
+
+    Id_Noticia int(5) NOT NULL,
+    Titulo varchar(50) NOT NULL,
+    BreveDescricao varchar(100) NOT NULL,
+    CorpoNoticia varchar(1000) NOT NULL,
+	DataPublicacao varchar(200) NOT NULL,
+	FotoNoticia varchar(200) DEFAULT NULL,
+
+    CONSTRAINT UC_Noticia UNIQUE (Titulo)
+	
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE Noticia ADD PRIMARY KEY (Id_Noticia);
+
+ALTER TABLE Noticia MODIFY Id_Noticia int(5) NOT NULL AUTO_INCREMENT;
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+------------------------------ Tabela Colaborador ---------------------------------------------------------------------------------------
+
+	
+*/
+
+CREATE TABLE Colaborador ( 
+
+    CPF_Colaborador varchar(11) NOT NULL,
+    Id_Endereco int(5) NOT NULL,
+    Nome varchar(100) NOT NULL,
+    Email varchar(50) NOT NULL,
+    Primeiro_Telefone varchar(12) NOT NULL,
+	Funcao varchar(100) NOT NULL,
+	BreveDescricao varchar(500) NOT NULL,
+	FotoColaborador varchar(200) NOT NULL,
+
+    CONSTRAINT UC_Colaborador UNIQUE (CPF_Colaborador, email, Primeiro_Telefone, FotoColaborador)
+	
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE Colaborador ADD PRIMARY KEY (CPF_Colaborador);
+
+ALTER TABLE Colaborador ADD CONSTRAINT fk_Colaborador_IdEndereco FOREIGN KEY (Id_Endereco) REFERENCES Endereco (Id_Endereco)  ON UPDATE CASCADE ON DELETE CASCADE;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------ Tabela Administrador -----------------------------------------------------------------------------------
 
 	A tabela "Administrador" tem por finalidade armazenar as informações de um administrador da plataforma.
@@ -64,12 +115,12 @@ ALTER TABLE Plataforma ADD CONSTRAINT fk_Plataforma_IdEndereco FOREIGN KEY (Id_E
 
 CREATE TABLE Administrador ( 
 
-    CPF_Administrador int(11) NOT NULL,
+    CPF_Administrador varchar(11) NOT NULL,
     Id_Endereco int(5) NOT NULL,
     Nome varchar(100) NOT NULL,
     Email varchar(50) NOT NULL,
     Senha varchar(25) NOT NULL,
-    Primeiro_Telefone int(12) NOT NULL,
+    Primeiro_Telefone varchar(12) NOT NULL,
     Bloqueado bit NOT NULL DEFAULT 0,
 
     CONSTRAINT UC_Administrador UNIQUE (CPF_Administrador, email, Primeiro_Telefone)
@@ -89,12 +140,12 @@ ALTER TABLE Administrador ADD CONSTRAINT fk_Administrador_IdEndereco FOREIGN KEY
 
 CREATE TABLE Aluno ( 
 
-    CPF_Aluno int(11) NOT NULL,
+    CPF_Aluno varchar(11) NOT NULL,
     Id_Endereco int(5) NOT NULL,
     Nome varchar(100) NOT NULL,
     Email varchar(50) NOT NULL,
     Senha varchar(25) NOT NULL,
-    Primeiro_Telefone int(12) NOT NULL,
+    Primeiro_Telefone varchar(12) NOT NULL,
     Bloqueado bit NOT NULL DEFAULT 0,
 
     CONSTRAINT UC_Aluno UNIQUE (CPF_Aluno, email, Primeiro_Telefone)
@@ -114,13 +165,14 @@ ALTER TABLE Aluno ADD CONSTRAINT fk_Aluno_IdEndereco FOREIGN KEY (Id_Endereco) R
 
 CREATE TABLE Professor ( 
 
-    CPF_Professor int(11),
+    CPF_Professor varchar(11),
     Id_Endereco int(5) NOT NULL,
     Nome varchar(100) NOT NULL,
     Email varchar(50) NOT NULL,
     Senha varchar(25) NOT NULL,
-    Primeiro_Telefone int(12) NOT NULL,
+    Primeiro_Telefone varchar(12) NOT NULL,
     Bloqueado bit NOT NULL DEFAULT 0,
+	FotoProfessor varchar(200) NOT NULL,
 
     CONSTRAINT UC_Professor UNIQUE (CPF_Professor, email, Primeiro_Telefone)
 	
@@ -142,10 +194,12 @@ CREATE TABLE Curso (
     Id_Curso int(5) NOT NULL,
     Nome varchar(100) NOT NULL,
     Descricao varchar(500) NOT NULL,
-    Nivel_Dificuldade ENUM('Fácil', 'Moderado', 'Difícil'), 
-    Carga_Horaria ENUM('20h','40h','60h','80h','100h','120h'),
-    Pre_Requisitos varchar(200) DEFAULT 'Sem pré-requisitos.',	
-    Modalidade ENUM('Presencial', 'Semipresencial', 'EaD')    
+    Nivel_Dificuldade ENUM('Fácil', 'Moderado', 'Dificil') NOT NULL, 
+    Carga_Horaria ENUM('20h','40h','60h','80h','100h','120h') NOT NULL,
+    Pre_Requisitos varchar(200) DEFAULT 'Sem pré-requisitos.' NOT NULL,	
+    Modalidade ENUM('Presencial', 'Semipresencial', 'EaD') NOT NULL,
+	FotoCurso varchar(200) NOT NULL
+	
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -163,7 +217,7 @@ ALTER TABLE Curso MODIFY Id_Curso int(5) NOT NULL AUTO_INCREMENT;
 CREATE TABLE Responsaveis_Curso (
 
     Id_Curso int(5) NOT NULL,
-    CPF_Professor int(5) NOT NULL
+    CPF_Professor varchar(11) NOT NULL
 
 )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -243,6 +297,7 @@ ALTER TABLE Modulo ADD CONSTRAINT fk_Modulo_IdCurso FOREIGN KEY (Id_Curso) REFER
 	A tabela "Aula" tem por objetivo armazenar as informações de determinado módulo que por sua vez pertence a determinado curso.
 	Uma linha nessa tabela pode ser criada por professores criadores do curso. 
 */
+
 CREATE TABLE Aula(
 	
     Id_Aula int(5) NOT NULL,
@@ -291,7 +346,7 @@ CREATE TABLE Matricula(
 
     Id_Matricula int(5) NOT NULL,
     Id_Curso int(5) NOT NULL,
-    CPF_Aluno int(5) NOT NULL,
+    CPF_Aluno varchar(11) NOT NULL,
     Data_Matricula DATE NOT NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

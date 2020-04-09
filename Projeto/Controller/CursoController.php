@@ -1,10 +1,7 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."Model/Curso.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/Projeto/"."BancoDados/CursoDAO.php");
 
 /**
  * Description of CursoController
@@ -13,10 +10,9 @@
  */
 class CursoController {
 
-    private $conexaoPDO;
+    private static $instance;
 
     public function __construct() {
-        $this->conexaoPDO = (new ConexaoBD)->getConexaoPDO();
     }
 
     public static function getInstance() {
@@ -26,26 +22,30 @@ class CursoController {
         return self::$instance;
     }
     
-    public function adicionarNovoCurso($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade) {
-        $curso = new Curso($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade);
-        return CursoDAO::getInstance()-->adicionarNovoCurso($curso);
+    public function adicionarNovoCurso($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade, $urlFoto) {
+		if (CursoDAO::getInstance()->verificarCursoNome($nome) == false) {
+			$curso = new Curso($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade, $urlFoto);
+			return CursoDAO::getInstance()->adicionarNovoCurso($curso);
+		}
+		else
+			return false;
     }
 
     public function listarCursos() {
-        return CursoDAO::getInstance()-->listarCursos();
+        return CursoDAO::getInstance()->listarCursos();
     }
    
     public function buscarCursoId($idCurso) {
-        return CursoDAO::getInstance()-->buscarCursoId($idCurso);
+        return CursoDAO::getInstance()->buscarCursoId($idCurso);
     }
     
-    public function editarDadosCurso($idCurso, $nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade) {
-        $curso = new Curso($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade);
+    public function editarDadosCurso($idCurso, $nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade, $urlFoto) {
+        $curso = new Curso($nome, $descricao, $nivelDificuldade, $cargaHoraria, $preRequisitos, $modalidade, $urlFoto);
         $curso-->setIdCurso($idCurso);
-        return CursoDAO::getInstance()-->editarDadosCurso($curso);
+        return CursoDAO::getInstance()->editarDadosCurso($curso);
     }
 
     public function deletarCurso($idCurso) {
-        return CursoDAO::getInstance()-->deletarCurso($idCurso);
+        return CursoDAO::getInstance()->deletarCurso($idCurso);
     }
 }
